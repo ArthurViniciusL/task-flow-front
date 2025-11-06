@@ -1,82 +1,80 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { Link } from "react-router-dom";
+
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
 
-export default function ForgotPassword() {
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
+const formSchema = z.object({
+  email: z.string().email({ message: "E-mail inválido." }),
+});
 
-  const handleResetPassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+export function ForgotPassword() {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
 
-    try {
-      // TODO: Integrar com sua infraestrutura de autenticação
-      console.log("Password reset request for:", email);
-      
-      toast({
-        title: "Email enviado",
-        description: "Verifique sua caixa de entrada para redefinir sua senha.",
-      });
-      
-      setEmail("");
-    } catch (error) {
-      toast({
-        title: "Erro",
-        description: "Não foi possível enviar o email. Tente novamente.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+    // Handle forgot password logic here
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted/50 p-4">
-      <Card className="w-full max-w-md">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <Card className="w-[350px]">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">
-            Recuperar Senha
-          </CardTitle>
+          <CardTitle className="text-2xl">Recuperar Senha</CardTitle>
           <CardDescription>
-            Digite seu email para receber instruções de recuperação
+            Insira seu e-mail para receber um link de recuperação de senha.
           </CardDescription>
         </CardHeader>
-        <form onSubmit={handleResetPassword}>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="seu@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>E-mail</FormLabel>
+                    <FormControl>
+                      <Input placeholder="m@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-          </CardContent>
-          <CardFooter className="flex flex-col space-y-4">
-            <Button
-              type="submit"
-              className="w-full bg-primary hover:bg-primary-hover"
-              disabled={loading}
-            >
-              {loading ? "Enviando..." : "Enviar instruções"}
-            </Button>
-            <Link
-              to="/auth/login"
-              className="text-sm text-center text-primary hover:underline"
-            >
-              Voltar para login
+              <Button type="submit" className="w-full">
+                Enviar Link
+              </Button>
+            </form>
+          </Form>
+          <div className="mt-4 text-center text-sm">
+            Lembrou da sua senha?{" "}
+            <Link to="/login" className="underline">
+              Entrar
             </Link>
-          </CardFooter>
-        </form>
+          </div>
+        </CardContent>
       </Card>
     </div>
   );

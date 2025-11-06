@@ -1,10 +1,4 @@
-export interface User {
-  id: string;
-  email: string;
-  name?: string;
-  avatar_url?: string;
-  created_at: string;
-}
+import { User } from "./user";
 
 export interface Session {
   user: User;

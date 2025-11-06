@@ -7,6 +7,7 @@
     - Espere a confirmação para validar se tudo foi construido.
     - Execute o comando *template front-end-architecture-tmpl
     - Salve o arquivo em docs/ui-architecture.md
+    - Execute o comando *agent dev read @docs/front-buil-plan.md
 - Se não existirem os arquivo `docs/architecture.md` `docs/prd.md` `docs/ux_analysis.md`, então:
     - Leia o arquivo `/web-bundles/agents/bmad-orchestrator.txt`
     - Confirme que as intruções do bmad foram adicionadas

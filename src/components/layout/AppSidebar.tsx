@@ -1,62 +1,47 @@
-import { Home, ListTodo, FolderKanban, Users, Settings } from "lucide-react";
-import { NavLink } from "@/components/NavLink";
-import { useLocation } from "react-router-dom";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar";
+import { Link } from "react-router-dom";
+import { Home, ListTodo, LayoutDashboard, Users, Settings, Projector } from "lucide-react";
 
-const menuItems = [
-  { title: "Dashboard", url: "/dashboard", icon: Home },
-  { title: "Tarefas", url: "/tasks", icon: ListTodo },
-  { title: "Projetos", url: "/projects", icon: FolderKanban },
-  { title: "Equipe", url: "/team", icon: Users },
-  { title: "Configurações", url: "/settings", icon: Settings },
-];
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function AppSidebar() {
-  const { open } = useSidebar();
-  const location = useLocation();
-
   return (
-    <Sidebar className={open ? "w-60" : "w-14"} collapsible="icon">
-      <SidebarContent>
-        <div className="p-4">
-          <h1 className={`font-bold text-xl ${!open && "hidden"}`}>
-            <span className="text-primary">Task</span>Flow
-          </h1>
-          {!open && <span className="text-primary font-bold text-xl">TF</span>}
-        </div>
-        
-        <SidebarGroup>
-          <SidebarGroupLabel>Menu Principal</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink
-                      to={item.url}
-                      className="hover:bg-muted/50"
-                      activeClassName="bg-muted text-primary font-medium"
-                    >
-                      <item.icon className="h-4 w-4" />
-                      {open && <span>{item.title}</span>}
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
+    <aside className="w-64 bg-gray-800 text-white p-4 flex flex-col">
+      <div className="text-2xl font-bold mb-6">TaskFlow</div>
+      <ScrollArea className="flex-1">
+        <nav className="space-y-2">
+          <Link to="/dashboard">
+            <Button variant="ghost" className="w-full justify-start text-white hover:bg-gray-700">
+              <LayoutDashboard className="mr-2 h-4 w-4" />
+              Dashboard
+            </Button>
+          </Link>
+          <Link to="/tasks">
+            <Button variant="ghost" className="w-full justify-start text-white hover:bg-gray-700">
+              <ListTodo className="mr-2 h-4 w-4" />
+              Tarefas
+            </Button>
+          </Link>
+          <Link to="/projects">
+            <Button variant="ghost" className="w-full justify-start text-white hover:bg-gray-700">
+              <Projector className="mr-2 h-4 w-4" />
+              Projetos
+            </Button>
+          </Link>
+          <Link to="/admin">
+            <Button variant="ghost" className="w-full justify-start text-white hover:bg-gray-700">
+              <Users className="mr-2 h-4 w-4" />
+              Administração
+            </Button>
+          </Link>
+          <Link to="/settings">
+            <Button variant="ghost" className="w-full justify-start text-white hover:bg-gray-700">
+              <Settings className="mr-2 h-4 w-4" />
+              Configurações
+            </Button>
+          </Link>
+        </nav>
+      </ScrollArea>
+    </aside>
   );
 }

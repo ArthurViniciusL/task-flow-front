@@ -8,9 +8,9 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --primary: 180 100% 37%;
-    --primary-hover: 180 100% 33%;
-    --text-secondary: 0 0% 40%;
+    --primary: 278, 100%, 50%;
+    --primary-hover: 177 100% 33%;
+    --text-muted: 0 0% 40%;
     
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
