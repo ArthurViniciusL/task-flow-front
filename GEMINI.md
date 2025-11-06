@@ -1,0 +1,11 @@
+- Leia o arquivo `/web-bundles/agents/bmad-orchestrator.txt`
+- Confirme que as intruções do bmad foram adicionadas
+- Leia o arquivo `/web-bundles/teams/team-fullstack.txt`
+- Entenda que todos os arquivos gerados pelos agentes devem ser salvos dentro de docs/
+- Execute o comando *agent analyst
+- Leia os requisitos funcionais presentes em: `/gemini-files/RFs.md`
+- Execute o comando *agent pm
+- Execute o comando *agent architect
+- Execute o comando *agent po
+- Espere a confirmação para validar se tudo foi construido.
+- Caso seja enviado o comando `-> save chat` salve o historico da conversa dentro de `gemini-files/chat/dd-mm-yy.md`
