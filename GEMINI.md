@@ -10,4 +10,5 @@
 > Resposta: Deve ser um subtitulo e abaixo mostrar as sua respota, exemplo:
     ## Resposta:
     Para implementar a lógica de permissões por perfil no back-end, sugiro uma abordagem baseada em **Guards e Decorators** do NestJS integrada com o seu schema do Prisma.
+- Não execute comandos npm. Em vez disso me informe quais comandos devem ser executados e aguarde meu feedback
 - Caso seja solicitado `-> BMAD.md` leia e siga as intruções de /BMAD.md
