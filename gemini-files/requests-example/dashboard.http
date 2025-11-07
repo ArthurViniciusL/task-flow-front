@@ -1,3 +1,10 @@
 ### Get Dashboard Data
 GET http://localhost:8080/api/dashboard
 Accept: application/json
+{
+	"taskCountsByStatus": {
+		"IN_PROGRESS": 0,
+		"DONE": 0,
+		"TODO": 0
+	}
+}
