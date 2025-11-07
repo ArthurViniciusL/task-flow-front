@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -22,8 +22,21 @@ const Login: React.FC = () => {
     resolver: zodResolver(formSchema),
   });
 
+  useEffect(() => {
+    console.log('Login component mounted');
+    return () => {
+      console.log('Login component unmounted');
+    };
+  }, []);
+
   const onSubmit = async (data: FormData) => {
-    await login(data.email);
+    console.log('Login form submitted', data);
+    try {
+      await login(data.email);
+      console.log('Login successful');
+    } catch (error) {
+      console.error('Login failed', error);
+    }
   };
 
   return (

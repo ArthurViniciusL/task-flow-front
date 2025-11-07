@@ -74,7 +74,12 @@ O projeto TaskFlow será construído sobre uma arquitetura cliente-servidor, com
 ##### 2.6. Configurações e Administração de Usuários (Epic 6)
 
 *   **Backend:**
-    *   **API de Administração:** Endpoints restritos ao perfil `Administrador` para gerenciar usuários (criar, editar perfil, desativar) (`/admin/users`).
+    *   **API de Administração:** Endpoints restritos ao perfil `Administrador` para gerenciar usuários:
+        *   `GET /api/admin/users`: Listar todos os usuários.
+        *   `GET /api/admin/users/{id}`: Obter usuário por ID.
+        *   `POST /api/admin/users`: Criar novo usuário.
+        *   `PUT /api/admin/users/{id}`: Atualizar usuário por ID.
+        *   `DELETE /api/admin/users/{id}`: Excluir usuário por ID.
     *   **Aplicação de Permissões:** Verificações rigorosas de RBAC em todos os endpoints da API.
 *   **Frontend:**
     *   **Painel de Administração:** UI dedicada para o `Administrador` gerenciar usuários.

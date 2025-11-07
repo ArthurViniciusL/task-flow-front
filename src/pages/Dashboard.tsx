@@ -83,7 +83,7 @@ export default function Dashboard() {
       {/* Task Status Chart */}
       <div className="space-y-4">
         <h2 className="text-2xl font-semibold">Status das Tarefas</h2>
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 h-80">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 h-80 min-w-full">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie

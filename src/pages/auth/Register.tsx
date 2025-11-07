@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -8,11 +8,14 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useAuth } from '@/context/AuthContext';
+import { RegisterData } from '@/types/auth';
 
 const formSchema = z.object({
+  username: z.string().min(1, { message: "O nome de usuário é obrigatório." }),
   email: z.string().email({ message: "E-mail inválido." }),
   password: z.string().min(6, { message: "A senha deve ter pelo menos 6 caracteres." }),
   confirmPassword: z.string(),
+  roles: z.string().optional(), // Will be parsed into string[]
 }).refine((data) => data.password === data.confirmPassword, {
   message: "As senhas não coincidem.",
   path: ["confirmPassword"],
@@ -26,8 +29,27 @@ const Register: React.FC = () => {
     resolver: zodResolver(formSchema),
   });
 
+  useEffect(() => {
+    console.log('Register component mounted');
+    return () => {
+      console.log('Register component unmounted');
+    };
+  }, []);
+
   const onSubmit = async (data: FormData) => {
-    await authRegister(data);
+    console.log('Register form submitted', data);
+    try {
+      const registerData: RegisterData = {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        roles: data.roles ? data.roles.split(',').map(role => role.trim().toUpperCase()) : ["COLLABORATOR"], // Default role
+      };
+      await authRegister(registerData);
+      console.log('Registration successful');
+    } catch (error) {
+      console.error('Registration failed', error);
+    }
   };
 
   return (
@@ -39,6 +61,16 @@ const Register: React.FC = () => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="username">Nome de Usuário</Label>
+              <Input
+                id="username"
+                type="text"
+                placeholder="Arthur"
+                {...register("username")}
+              />
+              {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
+            </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -66,6 +98,16 @@ const Register: React.FC = () => {
                 {...register("confirmPassword")}
               />
               {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="roles">Cargos (separados por vírgula)</Label>
+              <Input
+                id="roles"
+                type="text"
+                placeholder="ADMIN, MANAGER, COLLABORATOR"
+                {...register("roles")}
+              />
+              {errors.roles && <p className="text-red-500 text-sm">{errors.roles.message}</p>}
             </div>
             <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? "Registrando..." : "Registrar"}

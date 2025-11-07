@@ -28,64 +28,78 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('AuthContext: AuthProvider mounted');
     const token = localStorage.getItem('authToken');
     if (token) {
-      // In a real application, you would validate the token with the backend
-      // and fetch user details. For now, we'll just assume it's valid.
-      // And decode the user info from the token or fetch it.
-      // For mock, we'll just set a dummy user.
+      console.log('AuthContext: authToken found in localStorage');
       setIsAuthenticated(true);
       setUser({ id: "mock-user", email: "mock@example.com", role: "collaborator", name: "Mock User" }); // Placeholder user
+    } else {
+      console.log('AuthContext: no authToken found in localStorage');
     }
     setLoading(false);
+    console.log('AuthContext: loading set to false');
+
+    return () => {
+      console.log('AuthContext: AuthProvider unmounted');
+    };
   }, []);
 
   const login = async (email: string) => {
+    console.log('AuthContext: Attempting login for email:', email);
     setIsSubmitting(true);
     try {
       const response = await authApi.login(email);
       if (response.success && response.token) {
+        console.log('AuthContext: Login successful, token received');
         localStorage.setItem('authToken', response.token);
-        // In a real app, decode token or fetch user details
         setIsAuthenticated(true);
         setUser({ id: "mock-user", email: email, role: "collaborator", name: "Mock User" }); // Placeholder user
         toast.success("Login realizado com sucesso!");
         navigate('/dashboard');
       } else {
+        console.error('AuthContext: Login failed', response.message);
         toast.error(response.message || "Falha no login.");
       }
     } catch (error) {
-      console.error("Erro ao fazer login:", error);
+      console.error("AuthContext: Error during login:", error);
       toast.error("Ocorreu um erro inesperado.");
     } finally {
       setIsSubmitting(false);
+      console.log('AuthContext: Login process finished');
     }
   };
 
   const register = async (data: RegisterData) => {
+    console.log('AuthContext: Attempting registration for data:', data);
     setIsSubmitting(true);
     try {
-      const response = await authApi.register(data.email);
+      const response = await authApi.register(data);
       if (response.success) {
+        console.log('AuthContext: Registration successful');
         toast.success(response.message || "Registro realizado com sucesso!");
         navigate('/login');
       } else {
+        console.error('AuthContext: Registration failed', response.message);
         toast.error(response.message || "Falha no registro.");
       }
     } catch (error) {
-      console.error("Erro ao registrar:", error);
+      console.error("AuthContext: Error during registration:", error);
       toast.error("Ocorreu um erro inesperado.");
     } finally {
       setIsSubmitting(false);
+      console.log('AuthContext: Registration process finished');
     }
   };
 
   const logout = () => {
+    console.log('AuthContext: User logging out');
     localStorage.removeItem('authToken');
     setIsAuthenticated(false);
     setUser(null);
     toast.info("Você foi desconectado.");
     navigate('/login');
+    console.log('AuthContext: User logged out');
   };
 
   return (

@@ -1,5 +1,5 @@
 import { Task, TaskStatus } from "@/types/task";
-import { User } from "@/types/auth";
+import { User, RegisterData } from "@/types/auth";
 import { Project } from "@/types/project";
 import { Comment } from "@/types/comment";
 import { mockUsers, mockProjects, mockComments, getMockTasks, setMockTasks } from "./mockData";
@@ -9,16 +9,16 @@ const delay = (ms: number = 500) => new Promise(resolve => setTimeout(resolve, m
 
 // Auth API
 export const authApi = {
-  register: async (email: string): Promise<{ success: boolean; message?: string }> => {
+  register: async (data: RegisterData): Promise<{ success: boolean; message?: string }> => {
     await delay();
-    if (mockUsers.some(user => user.email === email)) {
+    if (mockUsers.some(user => user.email === data.email)) {
       return { success: false, message: "Este e-mail já está em uso." };
     }
     const newUser: User = {
       id: `user-${Date.now()}`,
-      email,
-      name: email.split('@')[0], // Simple name from email
-      role: "collaborator", // Default role for new registrations
+      email: data.email,
+      name: data.username,
+      role: data.roles[0] || "collaborator", // Use the first role or default to collaborator
     };
     mockUsers.push(newUser);
     console.log("New user registered:", newUser);

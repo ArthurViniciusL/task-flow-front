@@ -8,4 +8,6 @@ export interface User {
 export interface RegisterData {
   email: string;
   password: string;
+  username: string;
+  roles: string[];
 }

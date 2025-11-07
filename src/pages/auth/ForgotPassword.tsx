@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -22,17 +22,27 @@ const ForgotPassword: React.FC = () => {
     resolver: zodResolver(formSchema),
   });
 
+  useEffect(() => {
+    console.log('ForgotPassword component mounted');
+    return () => {
+      console.log('ForgotPassword component unmounted');
+    };
+  }, []);
+
   const onSubmit = async (data: FormData) => {
+    console.log('Forgot password form submitted', data);
     try {
       const response = await authApi.requestPasswordReset(data.email);
       if (response.success) {
+        console.log('Password reset link sent successfully');
         toast.success(response.message || "Link de redefinição enviado com sucesso!");
         navigate('/login');
       } else {
+        console.error('Failed to send password reset link', response.message);
         toast.error(response.message || "Falha ao enviar link de redefinição.");
       }
     } catch (error) {
-      console.error("Erro ao solicitar redefinição de senha:", error);
+      console.error("Error requesting password reset:", error);
       toast.error("Ocorreu um erro inesperado.");
     }
   };

@@ -12,7 +12,9 @@ POST http://localhost:8080/api/auth/register
 Content-Type: application/json
 
 {
-  "username": "new_username",
-  "password": "new_password",
-  "email": "new_user@example.com"
+  "username": "Arthur",
+  "password": "arthur1234",
+  "roles": [
+    "ADMIN"
+  ]
 }
