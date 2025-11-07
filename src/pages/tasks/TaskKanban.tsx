@@ -20,7 +20,7 @@ import { useSortable } from "@dnd-kit/sortable";
 
 const statusColumns: { id: TaskStatus; label: string; color: string }[] = [
   { id: "todo", label: "A Fazer", color: "bg-secondary" },
-  { id: "in_progress", label: "Em Progresso", color: "bg-blue-100 dark:bg-blue-950" },
+  { id: "in-progress", label: "Em Progresso", color: "bg-blue-100 dark:bg-blue-950" },
   { id: "done", label: "Concluído", color: "bg-green-100 dark:bg-green-950" },
   { id: "blocked", label: "Bloqueado", color: "bg-red-100 dark:bg-red-950" },
 ];
@@ -44,7 +44,7 @@ function SortableTaskCard({ task }: { task: Task }) {
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <TaskCard task={task} onClick={() => navigate(`/tasks/${task.id}`)} />
+      <TaskCard task={task} onClick={() => navigate(`/tasks/edit/${task.id}`)} />
     </div>
   );
 }
@@ -130,7 +130,7 @@ export default function TaskKanban() {
           <Button variant="outline" onClick={() => navigate("/tasks")}>
             Visualizar Lista
           </Button>
-          <Button onClick={() => {/* TODO: Abrir modal de criar tarefa */}}>
+          <Button onClick={() => navigate("/tasks/new")}>
             <Plus className="h-4 w-4 mr-2" />
             Nova Tarefa
           </Button>

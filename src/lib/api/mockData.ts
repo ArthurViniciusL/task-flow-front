@@ -1,5 +1,7 @@
-import { Task, Project, TaskStatus, TaskPriority } from "@/types/task";
+import { Task, TaskStatus } from "@/types/task";
 import { User } from "@/types/auth";
+import { Project } from "@/types/project";
+import { Comment } from "@/types/comment";
 
 // Mock Users
 export const mockUsers: User[] = [
@@ -50,18 +52,19 @@ export const mockProjects: Project[] = [
 ];
 
 // Mock Tasks
-export const mockTasks: Task[] = [
+let mockTasks: Task[] = [
   {
     id: "task-1",
     title: "Criar wireframes da homepage",
     description: "Desenvolver wireframes de baixa fidelidade para a nova homepage",
     assignedTo: "3",
-    status: "in_progress",
+    status: "in-progress",
     priority: "high",
-    dueDate: new Date("2024-12-15"),
+    dueDate: "2024-12-15",
     projectId: "proj-1",
     createdBy: "2",
     createdAt: new Date("2024-11-01"),
+    updatedAt: new Date("2024-11-01"),
   },
   {
     id: "task-2",
@@ -70,10 +73,11 @@ export const mockTasks: Task[] = [
     assignedTo: "3",
     status: "todo",
     priority: "urgent",
-    dueDate: new Date("2024-12-10"),
+    dueDate: "2024-12-10",
     projectId: "proj-2",
     createdBy: "2",
     createdAt: new Date("2024-11-05"),
+    updatedAt: new Date("2024-11-05"),
   },
   {
     id: "task-3",
@@ -82,22 +86,24 @@ export const mockTasks: Task[] = [
     assignedTo: "4",
     status: "done",
     priority: "medium",
-    dueDate: new Date("2024-11-30"),
+    dueDate: "2024-11-30",
     projectId: "proj-2",
     createdBy: "2",
     createdAt: new Date("2024-10-20"),
+    updatedAt: new Date("2024-10-20"),
   },
   {
     id: "task-4",
     title: "Design do sistema de componentes",
     description: "Criar biblioteca de componentes UI reutilizáveis",
     assignedTo: "4",
-    status: "in_progress",
+    status: "in-progress",
     priority: "high",
-    dueDate: new Date("2024-12-20"),
+    dueDate: "2024-12-20",
     projectId: "proj-1",
     createdBy: "2",
     createdAt: new Date("2024-11-10"),
+    updatedAt: new Date("2024-11-10"),
   },
   {
     id: "task-5",
@@ -106,10 +112,47 @@ export const mockTasks: Task[] = [
     assignedTo: "3",
     status: "todo",
     priority: "medium",
-    dueDate: new Date("2024-12-18"),
+    dueDate: "2024-12-18",
     projectId: "proj-2",
     createdBy: "2",
     createdAt: new Date("2024-11-12"),
+    updatedAt: new Date("2024-11-12"),
+  },
+];
+
+export const getMockTasks = (): Task[] => {
+  return [...mockTasks];
+};
+
+export const setMockTasks = (newTasks: Task[]) => {
+  mockTasks = newTasks;
+};
+
+// Mock Comments
+export const mockComments: Comment[] = [
+  {
+    id: "comment-1",
+    taskId: "task-1",
+    userId: "3",
+    userName: "João Santos",
+    content: "Preciso de mais detalhes sobre os requisitos de design.",
+    createdAt: new Date("2024-11-02T10:00:00Z"),
+  },
+  {
+    id: "comment-2",
+    taskId: "task-1",
+    userId: "2",
+    userName: "Gerente Silva",
+    content: "Verifique o documento de UX para os requisitos visuais.",
+    createdAt: new Date("2024-11-02T10:30:00Z"),
+  },
+  {
+    id: "comment-3",
+    taskId: "task-2",
+    userId: "3",
+    userName: "João Santos",
+    content: "Qual biblioteca JWT devemos usar?",
+    createdAt: new Date("2024-11-06T14:00:00Z"),
   },
 ];
 

@@ -6,6 +6,7 @@ import { TaskCard } from "@/components/tasks/TaskCard";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Circle, Clock, AlertCircle, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -28,10 +29,17 @@ export default function Dashboard() {
 
   const stats = {
     todo: tasks.filter((t) => t.status === "todo").length,
-    inProgress: tasks.filter((t) => t.status === "in_progress").length,
+    inProgress: tasks.filter((t) => t.status === "in-progress").length,
     done: tasks.filter((t) => t.status === "done").length,
     blocked: tasks.filter((t) => t.status === "blocked").length,
   };
+
+  const pieChartData = [
+    { name: 'A Fazer', value: stats.todo, color: '#8884d8' },
+    { name: 'Em Progresso', value: stats.inProgress, color: '#82ca9d' },
+    { name: 'Concluído', value: stats.done, color: '#ffc658' },
+    { name: 'Bloqueado', value: stats.blocked, color: '#ff7300' },
+  ];
 
   const recentTasks = tasks
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
@@ -70,6 +78,32 @@ export default function Dashboard() {
           icon={AlertCircle}
           description="Tarefas com impedimentos"
         />
+      </div>
+
+      {/* Task Status Chart */}
+      <div className="space-y-4">
+        <h2 className="text-2xl font-semibold">Status das Tarefas</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 h-80">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={pieChartData}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {pieChartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
       </div>
 
       {/* Recent Tasks */}
