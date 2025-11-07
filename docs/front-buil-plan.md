@@ -1,270 +1,152 @@
-📋 Plano Detalhado de Construção - TaskFlow
-Analisei toda a documentação (PRD, Épicos, Arquitetura e Análise UX) e elaborei este plano estruturado para construção das telas.
+# Plano de Construção do Frontend (Front-Build Plan)
 
-🎨 1. Sistema de Design (Primeira Etapa)
-Ação: Atualizar src/index.css e tailwind.config.ts com o esquema de cores especificado.
+Este documento descreve o plano de construção do frontend do projeto TaskFlow, detalhando as etapas de desenvolvimento com base nos épicos e histórias definidos, e alinhado com a arquitetura de UI estabelecida.
 
-🏗️ 2. Estrutura de Pastas e Componentes
-Estrutura proposta:
+## 1. Visão Geral e Abordagem
 
-src/
-├── pages/              # Páginas principais
-│   ├── auth/           # Autenticação
-│   │   ├── Login.tsx
-│   │   ├── Register.tsx
-│   │   └── ForgotPassword.tsx
-│   ├── dashboard/      # Dashboard
-│   │   └── Dashboard.tsx
-│   ├── tasks/          # Gestão de tarefas
-│   │   ├── TaskList.tsx
-│   │   ├── TaskKanban.tsx
-│   │   └── TaskDetails.tsx
-│   ├── projects/       # Gestão de projetos
-│   │   ├── ProjectList.tsx
-│   │   └── ProjectDetails.tsx
-│   ├── admin/          # Administração
-│   │   └── UserManagement.tsx
-│   └── settings/       # Configurações
-│       └── Settings.tsx
-├── components/         # Componentes reutilizáveis
-│   ├── layout/
-│   │   ├── AppLayout.tsx      # Layout principal com sidebar
-│   │   ├── AppSidebar.tsx     # Sidebar de navegação
-│   │   └── Header.tsx         # Header com notificações
-│   ├── tasks/
-│   │   ├── TaskCard.tsx       # Card de tarefa
-│   │   ├── TaskForm.tsx       # Formulário de tarefa
-│   │   ├── TaskFilters.tsx    # Filtros de busca
-│   │   └── CommentSection.tsx # Seção de comentários
-│   ├── projects/
-│   │   ├── ProjectCard.tsx    # Card de projeto
-│   │   ├── ProjectForm.tsx    # Formulário de projeto
-│   │   └── ProgressBar.tsx    # Barra de progresso
-│   ├── dashboard/
-│   │   ├── StatsCard.tsx      # Card de estatísticas
-│   │   └── TaskChart.tsx      # Gráfico de tarefas
-│   └── notifications/
-│       └── NotificationCenter.tsx # Centro de notificações
-└── lib/
-    ├── api/            # Chamadas de API (mocked para MVP)
-    ├── hooks/          # Hooks customizados
-    └── types/          # TypeScript types
-📄 3. Telas por Épico (Ordem de Implementação)
-Epic 1: Autenticação e Base do Sistema
-Telas:
+A construção do frontend seguirá uma abordagem iterativa, focando na entrega de valor incremental por épico. Cada épico será desmembrado em histórias de usuário, que serão implementadas e testadas. A prioridade será dada à funcionalidade principal, seguida por melhorias de UX e recursos adicionais.
 
-Login (pages/auth/Login.tsx)
+## 2. Ferramentas e Ambiente de Desenvolvimento
 
-Formulário com email/senha
-Link para recuperação de senha
-Link para cadastro
-Validação com react-hook-form + zod
-Cadastro (pages/auth/Register.tsx)
+*   **Ambiente:** Node.js, npm/yarn
+*   **Editor:** VS Code (com extensões para React, TypeScript, Tailwind CSS)
+*   **Controle de Versão:** Git
+*   **Servidor de Desenvolvimento:** Vite
+*   **Testes:** (A definir, mas considerar Vitest/Jest com React Testing Library)
 
-Formulário com email/senha/confirmação
-Indicador de força da senha
-Redirecionamento pós-cadastro
-Recuperação de Senha (pages/auth/ForgotPassword.tsx)
+## 3. Etapas de Desenvolvimento por Épico
 
-Formulário com email
-Feedback de email enviado
-Componentes reutilizados:
+### Épico 1: Autenticação e Base do Sistema
 
-Input (shadcn)
-Button (shadcn)
-Card (shadcn)
-Form (shadcn)
-Epic 2: Gestão Essencial de Tarefas
-Telas:
+**Objetivo:** Estabelecer a infraestrutura fundamental para o sistema, criando um mecanismo de autenticação seguro e robusto.
 
-Lista de Tarefas (pages/tasks/TaskList.tsx)
+**Foco:** Configuração inicial do projeto, rotas de autenticação, integração com API de autenticação (mockada inicialmente, depois real).
 
-Tabela com colunas: título, responsável, status, prioridade, data
-Paginação
-Filtros e busca
-Ações: editar, excluir, visualizar
-Quadro Kanban (pages/tasks/TaskKanban.tsx)
+**Histórias e Tarefas Chave:**
 
-Colunas: A Fazer, Em Progresso, Concluído
-Drag & drop (usando dnd-kit ou similar)
-Cards de tarefa
-Detalhes da Tarefa (pages/tasks/TaskDetails.tsx)
+*   **Story 1.1: Cadastro de Usuário com E-mail e Senha**
+    *   Criar componente de formulário de registro (`Register.tsx`).
+    *   Implementar validação de formulário (ex: `react-hook-form` + `zod`).
+    *   Integrar com `mockApi.ts` para simular o registro.
+    *   Adicionar redirecionamento para a tela de login após sucesso.
+*   **Story 1.2: Login de Usuário com E-mail e Senha**
+    *   Criar componente de formulário de login (`Login.tsx`).
+    *   Implementar validação de formulário.
+    *   Integrar com `mockApi.ts` para simular o login e o retorno de JWT.
+    *   Implementar armazenamento seguro do JWT (ex: `localStorage` ou `sessionStorage` para MVP).
+    *   Criar um contexto de autenticação (`AuthContext`) para gerenciar o estado de autenticação global.
+    *   Adicionar redirecionamento para o dashboard após login bem-sucedido.
+*   **Story 1.3: Recuperação de Senha via E-mail**
+    *   Criar componente de formulário de recuperação de senha (`ForgotPassword.tsx`).
+    *   Implementar validação de e-mail.
+    *   Integrar com `mockApi.ts` para simular o envio de e-mail.
+    *   (Considerar a implementação da redefinição de senha em uma fase posterior, dependendo da API).
+*   **Story 1.4: Gestão de Perfis de Usuário (Atribuição Inicial)**
+    *   (Esta história tem uma dependência forte do backend para gestão de perfis. No frontend, focar na exibição do perfil do usuário logado e na proteção de rotas baseada nesse perfil).
+    *   Implementar proteção de rotas usando `AuthContext` e o perfil do usuário.
 
-Visualização completa
-Seção de comentários
-Histórico de alterações
-Componentes novos:
+### Épico 2: Gestão Essencial de Tarefas
 
-TaskCard - Card de tarefa para lista/kanban
-TaskForm - Modal ou página para criar/editar
-TaskFilters - Barra de filtros e busca
-CommentSection - Área de comentários
-Componentes reutilizados:
+**Objetivo:** Implementar as funcionalidades centrais de criação, edição, atribuição e visualização de tarefas.
 
-Table (shadcn)
-Dialog (shadcn)
-Select (shadcn)
-Badge (shadcn para status/prioridade)
-Epic 3: Gestão de Projetos
-Telas:
+**Foco:** Componentes de tarefas, integração com API de tarefas (mockada inicialmente), visualizações em lista e Kanban.
 
-Lista de Projetos (pages/projects/ProjectList.tsx)
+**Histórias e Tarefas Chave:**
 
-Grid ou lista de cards de projeto
-Progresso percentual
-Acesso aos detalhes
-Detalhes do Projeto (pages/projects/ProjectDetails.tsx)
+*   **Story 2.1: Criação de Tarefa**
+    *   Criar componente de formulário para criação de tarefas.
+    *   Integrar com `mockApi.ts` para adicionar tarefas.
+*   **Story 2.2: Edição de Tarefa**
+    *   Criar componente de formulário para edição de tarefas.
+    *   Integrar com `mockApi.ts` para atualizar tarefas.
+*   **Story 2.3: Exclusão de Tarefa**
+    *   Implementar funcionalidade de exclusão de tarefa com confirmação.
+    *   Integrar com `mockApi.ts` para remover tarefas.
+*   **Story 2.4: Atribuição de Tarefa**
+    *   Adicionar campo de seleção de responsável no formulário de tarefa.
+*   **Story 2.5: Visualização de Tarefas em Lista**
+    *   Desenvolver componente `TaskList.tsx` para exibir tarefas em formato de lista.
+    *   Implementar paginação, ordenação e filtragem.
+*   **Story 2.6: Visualização de Tarefas em Kanban Simples**
+    *   Desenvolver componente `TaskKanban.tsx` utilizando `@dnd-kit` para arrastar e soltar.
+    *   Integrar com `mockApi.ts` para atualizar o status da tarefa ao arrastar.
 
-Informações do projeto
-Tarefas associadas
-Resumo de progresso
-Membros da equipe
-Componentes novos:
+### Épico 3: Gestão de Projetos e Associação de Tarefas
 
-ProjectCard - Card de projeto
-ProjectForm - Formulário de criação/edição
-ProgressBar - Barra de progresso visual
-Componentes reutilizados:
+**Objetivo:** Capacitar os usuários a gerenciar projetos de forma eficaz como contêineres abrangentes para tarefas.
 
-Card (shadcn)
-Progress (shadcn)
-Avatar (shadcn para membros)
-Epic 4: Colaboração e Notificações
-Componentes:
+**Foco:** Componentes de projetos, associação de tarefas a projetos, painel de resumo.
 
-Centro de Notificações (components/notifications/NotificationCenter.tsx)
+**Histórias e Tarefas Chave:**
 
-Ícone de sino no header
-Dropdown com lista de notificações
-Marcar como lido
-Link para item relevante
-Seção de Comentários (já em TaskDetails)
+*   **Story 3.1: Criação de Projeto**
+    *   Criar componente de formulário para criação de projetos.
+    *   Integrar com `mockApi.ts` para adicionar projetos.
+*   **Story 3.2: Edição de Projeto**
+    *   Criar componente de formulário para edição de projetos.
+    *   Integrar com `mockApi.ts` para atualizar projetos.
+*   **Story 3.3: Associação de Tarefas a Projetos**
+    *   Adicionar campo de seleção de projeto no formulário de tarefa.
+*   **Story 3.4: Painel de Resumo do Progresso do Projeto**
+    *   Desenvolver componente para exibir o progresso do projeto (ex: `StatsCard.tsx` adaptado).
 
-Input de texto
-Lista de comentários
-Avatar + autor + timestamp
-Integração em:
+### Épico 4: Colaboração e Notificações
 
-Header (NotificationCenter)
-TaskDetails (CommentSection + ActivityLog)
-Componentes reutilizados:
+**Objetivo:** Aprimorar a comunicação da equipe e o rastreamento de atividades.
 
-Popover (shadcn)
-ScrollArea (shadcn)
-Textarea (shadcn)
-Epic 5: Dashboard e Relatórios
-Telas:
+**Foco:** Comentários, notificações básicas, histórico de alterações.
 
-Dashboard Principal (pages/dashboard/Dashboard.tsx)
+**Histórias e Tarefas Chave:**
 
-Cards com contadores (A Fazer, Em Progresso, Concluído)
-Gráfico de tarefas por status
-Tarefas recentes
-Projetos em andamento
-Relatórios (Seção dentro do Dashboard ou página separada)
+*   **Story 4.1: Adicionar Comentários em Tarefas**
+    *   Criar componente de comentários para tarefas.
+    *   Integrar com `mockApi.ts` para adicionar e exibir comentários.
+*   **Story 4.2: Notificação de Atribuição de Tarefa**
+    *   Implementar lógica de notificação no frontend (ex: usando `sonner`).
+*   **Story 4.3: Notificação de Comentário em Tarefa**
+    *   Implementar lógica de notificação para novos comentários.
+*   **Story 4.4: Histórico de Alterações da Tarefa**
+    *   Criar componente para exibir o histórico de alterações da tarefa.
 
-Filtros: por usuário, por projeto, por período
-Visualização de dados
-Botão de exportação (CSV/PDF)
-Componentes novos:
+### Épico 5: Dashboards e Relatórios Básicos
 
-StatsCard - Card de estatísticas
-TaskChart - Gráfico (usando recharts)
-Componentes reutilizados:
+**Objetivo:** Fornecer aos usuários insights valiosos sobre o status e o desempenho de tarefas e projetos.
 
-Card (shadcn)
-Chart (shadcn - recharts)
-Button (shadcn)
-Epic 6: Configurações e Administração
-Telas:
+**Foco:** Dashboard principal, relatórios básicos, exportação de dados.
 
-Gestão de Usuários (pages/admin/UserManagement.tsx)
+**Histórias e Tarefas Chave:**
 
-Tabela de usuários
-Ações: criar, editar perfil, desativar
-Filtros por perfil
-Configurações (pages/settings/Settings.tsx)
+*   **Story 5.1: Dashboard Principal com Contagem de Tarefas por Status**
+    *   Desenvolver o componente `Dashboard.tsx` com gráficos (usando `recharts`) para contagem de tarefas por status.
+*   **Story 5.2: Relatórios por Usuário**
+    *   Criar interface para geração de relatórios por usuário.
+*   **Story 5.3: Relatórios por Projeto**
+    *   Criar interface para geração de relatórios por projeto.
+*   **Story 5.4: Exportação de Dados (CSV ou PDF)**
+    *   Implementar funcionalidade de exportação (considerar bibliotecas como `js-file-download` ou `jspdf`).
 
-Perfil do usuário
-Preferências (tema, idioma - opcional)
-Componentes reutilizados:
+### Épico 6: Configurações e Administração de Usuários
 
-Table (shadcn)
-Dialog (shadcn)
-Switch (shadcn para ativar/desativar)
-🔧 4. Layout Global e Navegação
-Componentes de Layout:
+**Objetivo:** Fornecer capacidades administrativas para gerenciar usuários e suas permissões.
 
-AppLayout (components/layout/AppLayout.tsx)
+**Foco:** Gestão de usuários (apenas para administradores), configurações de idioma/tema.
 
-SidebarProvider do shadcn
-Estrutura: Sidebar + Main content area
-Wrapper para todas as páginas autenticadas
-AppSidebar (components/layout/AppSidebar.tsx)
+**Histórias e Tarefas Chave:**
 
-Logo
-Itens de menu:
-Dashboard
-Tarefas (Lista/Kanban)
-Projetos
-Configurações
-Admin (condicional para admins)
-Indicador de página ativa
-Colapsar/expandir
-Header (components/layout/Header.tsx)
+*   **Story 6.1: Gestão de Usuários (Administrador)**
+    *   Criar interface de administração de usuários (restrita a administradores).
+*   **Story 6.2: Definição de Permissões por Papel**
+    *   Garantir que a proteção de rotas e componentes respeite os perfis de usuário.
+*   **Story 6.3: Configurações de Idioma (Opcional)**
+    *   Implementar seletor de idioma e integração com biblioteca i18n.
+*   **Story 6.4: Configurações de Tema (Opcional)**
+    *   Implementar seletor de tema (claro/escuro) e aplicar estilos via Tailwind CSS.
 
-Título da página
-Centro de notificações
-Avatar do usuário
-Menu dropdown (logout)
-Roteamento:
+## 4. Considerações Gerais
 
-Rotas públicas: /login, /register, /forgot-password
-Rotas protegidas: Todas as demais (verificação de JWT)
-Rotas de admin: /admin/* (verificação de perfil)
-🎯 5. Ordem de Implementação Sugerida
-Fase 1 - Base:
+*   **Integração com API Real:** Após a implementação inicial com dados mockados, substituir `mockApi.ts` por chamadas a uma API real (ex: `axios`).
+*   **Testes:** Escrever testes unitários para componentes críticos e testes de integração para fluxos importantes.
+*   **Revisão de Código:** Realizar revisões de código regulares para garantir a qualidade e aderência aos padrões.
+*   **Documentação:** Manter a documentação atualizada, incluindo a documentação de componentes e a arquitetura.
 
-Design system (cores)
-Layout (AppLayout, AppSidebar, Header)
-Páginas de autenticação (Login, Register)
-Fase 2 - Core:
-
-Dashboard básico
-Lista de tarefas
-Kanban de tarefas
-Formulário de tarefa
-Fase 3 - Expansão:
-
-Projetos (lista + detalhes)
-Comentários e notificações
-Histórico de atividades
-Fase 4 - Admin e Relatórios:
-
-Dashboard com métricas
-Gestão de usuários
-Relatórios e exportação
-📦 6. Componentes Shadcn a Utilizar
-Já disponíveis:
-
-✅ Button, Input, Label, Form
-✅ Card, Badge, Avatar
-✅ Dialog, Popover, Sheet
-✅ Table, Select, Checkbox, Switch
-✅ Sidebar, Tabs, Progress
-✅ Toaster (feedback)
-🔒 7. Dados Mock para MVP
-Como estamos no frontend primeiro, criaremos:
-
-lib/api/mockData.ts - Dados simulados
-lib/api/mockApi.ts - Funções que simulam API calls
-LocalStorage ou Context API para estado temporário
-✅ Resumo do Plano
-Este plano propõe:
-
-20+ componentes reutilizáveis (TaskCard, ProjectCard, etc.)
-13 páginas principais (Login, Dashboard, TaskList, etc.)
-3 componentes de layout (AppLayout, Sidebar, Header)
-Integração total com shadcn UI (sem CSS customizado)
-Design system baseado nas cores especificadas (#00BDB7)
-Estrutura modular e escalável
+Este plano será ajustado conforme o desenvolvimento avança e novas informações surgem.
