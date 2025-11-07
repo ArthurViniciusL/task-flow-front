@@ -4,18 +4,6 @@ Analisei toda a documentação (PRD, Épicos, Arquitetura e Análise UX) e elabo
 🎨 1. Sistema de Design (Primeira Etapa)
 Ação: Atualizar src/index.css e tailwind.config.ts com o esquema de cores especificado.
 
-Cores a implementar:
-
-Primary: #00BDB7 → HSL: 178 100% 37%
-Primary-hover: #00a69b → HSL: 177 100% 33%
-Text: #666666 → HSL: 0 0% 40%
-Tokens semânticos:
-
-
---primary: 178 100% 37%
---primary-hover: 177 100% 33%
---primary-foreground: 0 0% 100%
---text-muted: 0 0% 40%
 🏗️ 2. Estrutura de Pastas e Componentes
 Estrutura proposta:
 
