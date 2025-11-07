@@ -1,4 +1,4 @@
-import { LayoutDashboard, Settings, Users, LogOut, CheckSquare, LayoutGrid } from "lucide-react";
+import { LayoutDashboard, Settings, Users, LogOut, CheckSquare, LayoutGrid, Plus, Folder, FolderOpen, BarChart2, Briefcase } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Sidebar,
@@ -13,6 +13,7 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthContext";
 
 const menuItems = [
   {
@@ -30,10 +31,18 @@ const menuItems = [
     url: "/tasks/kanban",
     icon: LayoutGrid,
   },
+  {
+    title: "Criar Tarefa",
+    url: "/tasks/new",
+    icon: Plus,
+  },
 ];
 
 export function AppSidebar() {
   const location = useLocation();
+  const { logout, user } = useAuth();
+
+  const isAdmin = user?.role === 'admin';
 
   return (
     <Sidebar collapsible="icon">
@@ -64,32 +73,88 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Configurações</SidebarGroupLabel>
+          <SidebarGroupLabel className="flex items-center gap-2">
+            <Folder className="h-4 w-4" />
+            <span>Projetos</span>
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link to="/settings">
-                    <Settings className="h-4 w-4" />
-                    <span>Configurações</span>
+                <SidebarMenuButton asChild isActive={location.pathname === '/projects'}>
+                  <Link to="/projects">
+                    <FolderOpen className="h-4 w-4" />
+                    <span>Listar Projetos</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link to="/admin/users">
-                    <Users className="h-4 w-4" />
-                    <span>Usuários</span>
+                <SidebarMenuButton asChild isActive={location.pathname === '/projects/new'}>
+                  <Link to="/projects/new">
+                    <Plus className="h-4 w-4" />
+                    <span>Criar Projeto</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel className="flex items-center gap-2">
+            <BarChart2 className="h-4 w-4" />
+            <span>Relatórios</span>
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={location.pathname === '/reports/users'}>
+                  <Link to="/reports/users">
+                    <Users className="h-4 w-4" />
+                    <span>Relatório por Usuário</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={location.pathname === '/reports/projects'}>
+                  <Link to="/reports/projects">
+                    <Briefcase className="h-4 w-4" />
+                    <span>Relatório por Projeto</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {isAdmin && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Configurações</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild>
+                    <Link to="/settings">
+                      <Settings className="h-4 w-4" />
+                      <span>Configurações</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild isActive={location.pathname === '/admin/users'}>
+                    <Link to="/admin/users">
+                      <Users className="h-4 w-4" />
+                      <span>Usuários</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
 
       <SidebarFooter className="border-t p-4">
-        <Button variant="ghost" className="w-full justify-start" onClick={() => {/* TODO: Logout */}}>
+        <Button variant="ghost" className="w-full justify-start" onClick={logout}>
           <LogOut className="h-4 w-4 mr-2" />
           Sair
         </Button>

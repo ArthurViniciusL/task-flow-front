@@ -1,7 +1,6 @@
 import { Task } from "@/types/task";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Calendar, User } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -14,16 +13,18 @@ interface TaskCardProps {
 
 const statusLabels = {
   todo: "A Fazer",
-  in_progress: "Em Progresso",
+  "in-progress": "Em Progresso",
   done: "Concluído",
   blocked: "Bloqueado",
+  backlog: "Backlog",
 };
 
 const statusColors = {
   todo: "secondary",
-  in_progress: "default",
+  "in-progress": "default",
   done: "outline",
   blocked: "destructive",
+  backlog: "secondary", // novo
 } as const;
 
 const priorityLabels = {
@@ -41,7 +42,8 @@ const priorityColors = {
 } as const;
 
 export function TaskCard({ task, onClick }: TaskCardProps) {
-  const assignedUser = getUserById(task.assignedTo);
+  const assignedUser = task.assignedTo ? getUserById(task.assignedTo) : undefined;
+  const priority = task.priority || 'medium';
 
   return (
     <Card 
@@ -51,8 +53,8 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-2">
           <h3 className="font-semibold text-sm line-clamp-2">{task.title}</h3>
-          <Badge variant={priorityColors[task.priority]} className="shrink-0 text-xs">
-            {priorityLabels[task.priority]}
+          <Badge variant={priorityColors[priority]} className="shrink-0 text-xs">
+            {priorityLabels[priority]}
           </Badge>
         </div>
       </CardHeader>
@@ -70,7 +72,7 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
           {task.dueDate && (
             <div className="flex items-center gap-1">
               <Calendar className="h-3 w-3" />
-              <span>{format(task.dueDate, "dd/MM/yyyy", { locale: ptBR })}</span>
+              <span>{format(new Date(task.dueDate), "dd/MM/yyyy", { locale: ptBR })}</span>
             </div>
           )}
         </div>
